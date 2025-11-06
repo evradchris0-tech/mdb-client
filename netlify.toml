@@ -1,0 +1,7 @@
+[build]
+  publish = "."  # indique que la racine contient index.html
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
