@@ -760,7 +760,6 @@
               class="form-control"
               required
               aria-required="true"
-              minlength="8"
             />
             <div class="input-hint" data-i18n="password_hint"></div>
           </div>
@@ -777,7 +776,6 @@
               class="form-control"
               required
               aria-required="true"
-              minlength="6"
             />
             <div class="input-hint" data-i18n="withdrawal_hint"></div>
           </div>
@@ -958,33 +956,33 @@
 
       // Notification System
       // Notification System
-    function showNotification(message, type = "info", duration = 4000) {
-      // ✅ NOUVELLE LIGNE - Créer le conteneur s'il n'existe pas
-      let container = document.getElementById("notificationContainer");
-      if (!container) {
-        container = document.createElement("div");
-        container.id = "notificationContainer";
-        document.body.insertBefore(container, document.body.firstChild);
-      }
+      function showNotification(message, type = "info", duration = 4000) {
+        // ✅ NOUVELLE LIGNE - Créer le conteneur s'il n'existe pas
+        let container = document.getElementById("notificationContainer");
+        if (!container) {
+          container = document.createElement("div");
+          container.id = "notificationContainer";
+          document.body.insertBefore(container, document.body.firstChild);
+        }
 
-      const notif = document.createElement("div");
-      notif.className = `notification ${type} show`;
-      notif.innerHTML = `
+        const notif = document.createElement("div");
+        notif.className = `notification ${type} show`;
+        notif.innerHTML = `
         ${message}
         <button class="notification-close" aria-label="Close notification">&times;</button>
       `;
 
-      container.appendChild(notif);  // ✅ Utilise container au lieu de notificationContainer
+        container.appendChild(notif); // ✅ Utilise container au lieu de notificationContainer
 
-      const closeBtn = notif.querySelector(".notification-close");
-      closeBtn.addEventListener("click", () => notif.remove());
+        const closeBtn = notif.querySelector(".notification-close");
+        closeBtn.addEventListener("click", () => notif.remove());
 
-      if (duration > 0) {
-        setTimeout(() => notif.remove(), duration);
+        if (duration > 0) {
+          setTimeout(() => notif.remove(), duration);
+        }
+
+        return notif;
       }
-
-      return notif;
-    }
 
       // Form Validation
       function validateForm() {
@@ -998,22 +996,6 @@
         if (!phone || !pass || !wpass || !wn) {
           showNotification(
             i18n[state.currentLang].validation_required,
-            "warning"
-          );
-          return false;
-        }
-
-        if (pass.length < 8) {
-          showNotification(
-            i18n[state.currentLang].validation_password,
-            "warning"
-          );
-          return false;
-        }
-
-        if (wpass.length < 6) {
-          showNotification(
-            i18n[state.currentLang].validation_withdrawal_password,
             "warning"
           );
           return false;
