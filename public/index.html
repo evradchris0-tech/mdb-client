@@ -1145,6 +1145,12 @@
           state.accountFilled = true;
           checkAccountFilled();
 
+          // ⭐ AJOUTE ICI ⭐
+          // Auto-enable AI toggle
+          state.isAIEnabled = true;
+          aiToggle.classList.add("active");
+          aiToggle.setAttribute("aria-checked", "true");
+
           showNotification(i18n[state.currentLang].success_saved, "success");
 
           // Reset form and close modal
