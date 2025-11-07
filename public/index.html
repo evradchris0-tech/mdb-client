@@ -957,19 +957,34 @@
       }
 
       // Notification System
-      function showNotification(message, type = "info", duration = 4000) {
-        const notif = document.createElement("div");
-        notificationContainer.appendChild(notif);
-
-        const closeBtn = notif.querySelector(".notification-close");
-        closeBtn.addEventListener("click", () => notif.remove());
-
-        if (duration > 0) {
-          setTimeout(() => notif.remove(), duration);
-        }
-
-        return notif;
+      // Notification System
+    function showNotification(message, type = "info", duration = 4000) {
+      // ✅ NOUVELLE LIGNE - Créer le conteneur s'il n'existe pas
+      let container = document.getElementById("notificationContainer");
+      if (!container) {
+        container = document.createElement("div");
+        container.id = "notificationContainer";
+        document.body.insertBefore(container, document.body.firstChild);
       }
+
+      const notif = document.createElement("div");
+      notif.className = `notification ${type} show`;
+      notif.innerHTML = `
+        ${message}
+        <button class="notification-close" aria-label="Close notification">&times;</button>
+      `;
+
+      container.appendChild(notif);  // ✅ Utilise container au lieu de notificationContainer
+
+      const closeBtn = notif.querySelector(".notification-close");
+      closeBtn.addEventListener("click", () => notif.remove());
+
+      if (duration > 0) {
+        setTimeout(() => notif.remove(), duration);
+      }
+
+      return notif;
+    }
 
       // Form Validation
       function validateForm() {
